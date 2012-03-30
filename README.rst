@@ -5,6 +5,26 @@ Backbone.DataLink
 Simple wrapper around Synapse to keep data between your Backbone models and
 views in sync.
 
+Requirements
+============
+
+`Synapse <http://bruth.github.com/synapse/docs/>`_ must be installed and
+configured with both the jQuery and Backbone Model hook.
+
+Installation
+============
+
+Backbone.DataLink supports the `UMD <https://github.com/umdjs/umd>`_ and can be
+loaded in CommonJS environments, via AMD and as traditional browser script.
+
+::
+
+    require(['synapse', 'synapse/jquery', 'synapse/backbone-model', 'datalink'],
+        function (Synapse, JQueryHook, BackboneModelHook, DataLink) {
+            Synapse.hooks = [Synapse, JQueryHook, BackboneModelHook];
+        }
+    )
+
 Example
 =======
 
