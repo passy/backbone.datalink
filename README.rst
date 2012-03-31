@@ -43,7 +43,7 @@ To override the default settings, provide a hash as third parameter::
 
     datalink.linkView(this, ['title', 'description'], {prefill: false})
 
-To override certain settings for specific elements, provide a third element::
+To override certain settings for specific elements, provide a fourth parameter::
 
     datalink.linkView(this, ['title', 'description'], {prefill: true}, {
         'title': {attribute: "name"},
