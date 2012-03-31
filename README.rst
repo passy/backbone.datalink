@@ -53,16 +53,16 @@ To override certain settings for specific elements, provide a third element::
 Options
 =======
 
-    * ``bind``, default ``syncWith``
-        * Binding function. One of 'syncWith', 'observe' or 'notify'.
-    * ``attribute``, default ``data-bind``
-        * HTML attribute to look for to map model attributes.
-    * ``ignoreEmpty``, default ``false``
-        * If false, raises an exception if an element could not be bound.
-    * ``prefill``, default ``true``
-        * Fill observed elements with model data on load.
-    * ``triggerOnBind``, default ``false``
-        * Fire change event after binding.
+* ``bind``, default ``syncWith``
+    * Binding function. One of 'syncWith', 'observe' or 'notify'.
+* ``attribute``, default ``data-bind``
+    * HTML attribute to look for to map model attributes.
+* ``ignoreEmpty``, default ``false``
+    * If false, raises an exception if an element could not be bound.
+* ``prefill``, default ``true``
+    * Fill observed elements with model data on load.
+* ``triggerOnBind``, default ``false``
+    * Fire change event after binding.
 
 License
 =======
