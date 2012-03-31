@@ -1,35 +1,7 @@
 /*
-# Backbone DataLink Library v0.2
-#
-# Simple wrapper around Synapse to work as easy as possible with your
-# Backbone models and views.
-#
-# Example:
-#
-# To sync the elements title and description of your model with the
-# corresponding input fields in your rendered view, add this after your
-# rendering is done:
-#
-# datalink.linkView(this, ['title', 'description'])
-#
-# Your template may look like this:
-#
-# <input data-bind=title>
-# <textarea data-bind=description>
-#
-# To override the default settings, provide a hash as third parameter:
-#
-# datalink.linkView(this, ['title', 'description'], {prefill: false})
-#
-# To override certain settings for specific elements, provide a third element:
-#
-# datalink.linkView(this, ['title', 'description'], {prefill: true}, {
-#   'title': {attribute: "name"},
-#   'description': {prefill: false}
-# })
-#
-# Copyright 2012, Pascal Hartig
-# Dual licensed under the MIT or GPL Version 3 licenses.
+Backbone DataLink Library v0.2
+Copyright 2012, Pascal Hartig
+Dual licensed under the MIT or GPL Version 3 licenses.
 */
 (function(root, factory) {
   if (typeof exports !== 'undefined') {
