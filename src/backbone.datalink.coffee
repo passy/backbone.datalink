@@ -82,7 +82,7 @@ Dual licensed under the MIT or GPL Version 3 licenses.
                 prefill(observed, localElementOptions)
                 observeFn.call(observer, observed)
 
-            checkElement = ($element, localElementOptions) ->
+            checkElement = ($element, selector, localElementOptions) ->
                 # Throw error if so desired.
                 unless $element.length
                     # Exlicitly set
@@ -99,7 +99,7 @@ Dual licensed under the MIT or GPL Version 3 licenses.
                 attribute = localElementOptions?.attribute or defaults.attribute
                 selector = "[#{attribute}=#{element}]"
                 $element = view.$(selector)
-                checkElement($element, localElementOptions)
+                checkElement($element, selector, localElementOptions)
 
                 return $element
 
