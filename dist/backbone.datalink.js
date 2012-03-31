@@ -69,7 +69,7 @@ Dual licensed under the MIT or GPL Version 3 licenses.
         prefill(observed, localElementOptions);
         return observeFn.call(observer, observed);
       };
-      checkElement = function($element, localElementOptions) {
+      checkElement = function($element, selector, localElementOptions) {
         if (!$element.length) {
           if ((localElementOptions != null ? localElementOptions.ignoreEmpty : void 0) === true) {
             return;
@@ -84,7 +84,7 @@ Dual licensed under the MIT or GPL Version 3 licenses.
         attribute = (localElementOptions != null ? localElementOptions.attribute : void 0) || defaults.attribute;
         selector = "[" + attribute + "=" + element + "]";
         $element = view.$(selector);
-        checkElement($element, localElementOptions);
+        checkElement($element, selector, localElementOptions);
         return $element;
       };
       _results = [];
