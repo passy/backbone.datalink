@@ -67,8 +67,8 @@ Dual licensed under the MIT or GPL Version 3 licenses.
                     return
 
                 attribute = observed.hook.detectOtherInterface(observed.raw)
-                interface = observed.hook.detectInterface(observed.raw)
-                observed.hook.setHandler(observed.raw, interface,
+                iface = observed.hook.detectInterface(observed.raw)
+                observed.hook.setHandler(observed.raw, iface,
                     view.model.get(attribute))
                 observed.set(attribute, observed)
 
