@@ -1,11 +1,20 @@
 {
   "name": "backbone.datalink",
   "version": "0.3.0",
-  "main": "src/backbone.datalink",
-  "author": {
+  "summary": "Wrapper around synapse to quickly bind backbone models to views",
+  "homepage": "https://github.com/passy/backbone.datalink",
+  "author": "Pascal Hartig",
+  "email": "phartig@weluse.de",
+  "authors": [{
     "name": "Pascal Hartig",
     "email": "phartig@weluse.de"
+  }],
+  "main": "dist/backbone.datalink",
+  "directories": {
+    "lib": "dist/",
+    "test": "test/"
   },
+  "keywords": ["backbone", "models", "sync"],
   "repository": {
     "type": "git",
     "url": "git://github.com/passy/backbone-datalink.git"
