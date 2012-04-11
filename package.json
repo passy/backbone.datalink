@@ -23,5 +23,12 @@
   },
  "scripts": {
     "test": "node_modules/.bin/mocha"
-  }
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://raw.github.com/passy/backbone.datalink/master/MIT-LICENSE"
+  }, {
+    "type": "GPLv3",
+    "url": "https://raw.github.com/passy/backbone.datalink/master/GPL-LICENSE"
+  }]
 }
