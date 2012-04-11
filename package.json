@@ -1,0 +1,21 @@
+{
+  "name": "backbone.datalink",
+  "version": "0.1.0",
+  "main": "src/backbone.datalink",
+  "author": {
+    "name": "Pascal Hartig",
+    "email": "phartig@weluse.de"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/passy/backbone-datalink.git"
+  },
+  "dependencies": {
+    "underscore": "1.3.3"
+  },
+  "devDependencies": {
+    "chai": "0.5.2",
+    "coffee-script": "1.3",
+    "mocha": "1.0.1"
+  }
+}

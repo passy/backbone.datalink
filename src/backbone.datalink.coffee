@@ -7,21 +7,25 @@ Dual licensed under the MIT or GPL Version 3 licenses.
 ((root, factory) ->
     if typeof exports isnt 'undefined'
         # Node/CommonJS
-        factory(root, exports, require('synapse'))
+        factory(root, exports, require('synapse'), require('underscore'))
     else if typeof define is 'function' and define.amd
         # AMD
-        define('datalink', ['synapse', 'exports'], (synapse, exports) ->
-            factory(root, exports, synapse))
+        define('datalink', ['synapse', 'underscore', 'exports'],
+            (synapse, underscore, exports) ->
+                factory(root, exports, synapse, underscore))
     else
         # Browser globals
         root.DataLink = factory(root, {}, root.Synapse)
-)(this, (root, DataLink, Synapse) ->
+)(this, (root, DataLink, Synapse, _) ->
+
+    # To make underscore work in both browsers and in node environments
+    _ or= window._
 
     checkView = (view) ->
         unless view.model?
             throw new Error "View #{view.toString()} must be bound to a model!"
 
-    return {
+    _.extend(DataLink, {
         version: "0.2"
 
         defaultOptions:
@@ -36,30 +40,31 @@ Dual licensed under the MIT or GPL Version 3 licenses.
             # Fire event on directly bind
             triggerOnBind: false
 
+        _getLocalOptions: (elements, defaultOptions, elementOptions) ->
+            defaults = _.defaults(defaultOptions or {}, @defaultOptions)
+            locals = {}
+
+            for element in elements
+                locals[element] = _.defaults(elementOptions?[element] or {}, defaults)
+
+            return locals
+
         linkView: (view, elements, defaultOptions, elementOptions) ->
             # Build local default options
-            defaults = _.defaults(defaultOptions or {}, @defaultOptions)
+            localOptions = @_getLocalOptions(elements,
+                defaultOptions, elementOptions)
 
             checkView(view)
             observer = new Synapse(view.model)
 
-            syncOptions = {
-                triggerOnBind: defaults.triggerOnBind
-            }
-
-            customSyncWith = (observed) ->
+            customSyncWith = (observed, syncOptions) ->
                 observer
                     .observe(observed, syncOptions)
                     .notify(observed, syncOptions)
 
             prefill = (observed, localElementOptions) ->
-                if localElementOptions?.prefill is false
+                if localElementOptions.prefill is false
                     return
-
-                # Check if the options have explicitly been set.
-                if not defaults.prefill and
-                    localElementOptions?.prefill isnt true
-                        return
 
                 attribute = observed.hook.detectOtherInterface(observed.raw)
                 interface = observed.hook.detectInterface(observed.raw)
@@ -68,35 +73,28 @@ Dual licensed under the MIT or GPL Version 3 licenses.
                 observed.set(attribute, observed)
 
             bind = ($element, localElementOptions) ->
-                if customBind = localElementOptions?.bind
-                    observeFnName = customBind
-                else
-                    observeFnName = defaults.bind
+                observeFnName = localElementOptions.bind
 
                 if observeFnName == 'syncWith'
                     observeFn = customSyncWith
                 else
                     observeFn = observer[observeFnName]
 
+                syncOptions =
+                    triggerOnBind: localElementOptions.triggerOnBind
+
                 observed = new Synapse($element)
                 prefill(observed, localElementOptions)
-                observeFn.call(observer, observed)
+                observeFn.call(observer, observed, syncOptions)
 
             checkElement = ($element, selector, localElementOptions) ->
                 # Throw error if so desired.
-                unless $element.length
-                    # Exlicitly set
-                    if localElementOptions?.ignoreEmpty is true
-                        return
-
-                    if not defaults.ignoreEmpty and
-                        localElementOptions?.ignoreEmpty isnt false
-
-                            throw new Error("""No matching element found
-                                for selector #{selector}!""")
+                unless $element.length or localElementOptions.ignoreEmpty
+                        throw new Error("""No matching element found
+                            for selector #{selector}!""")
 
             findElement = (element, localElementOptions) ->
-                attribute = localElementOptions?.attribute or defaults.attribute
+                attribute = localElementOptions.attribute
                 selector = "[#{attribute}=#{element}]"
                 $element = view.$(selector)
                 checkElement($element, selector, localElementOptions)
@@ -104,9 +102,11 @@ Dual licensed under the MIT or GPL Version 3 licenses.
                 return $element
 
             for element in elements
-                localElementOptions = elementOptions?[element]
+                localElementOptions = localOptions[element]
                 # Build jQuery object
                 $element = findElement(element, localElementOptions)
                 bind($element, localElementOptions)
-    }
+    })
+
+    return DataLink
 )
