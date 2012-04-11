@@ -1,5 +1,5 @@
 ###
-Backbone DataLink Library v0.2
+Backbone DataLink Library v0.3
 Copyright 2012, Pascal Hartig
 Dual licensed under the MIT or GPL Version 3 licenses.
 ###

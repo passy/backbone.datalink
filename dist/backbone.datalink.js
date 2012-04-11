@@ -5,22 +5,23 @@ Dual licensed under the MIT or GPL Version 3 licenses.
 */
 (function(root, factory) {
   if (typeof exports !== 'undefined') {
-    return factory(root, exports, require('synapse'));
+    return factory(root, exports, require('synapse'), require('underscore'));
   } else if (typeof define === 'function' && define.amd) {
-    return define('datalink', ['synapse', 'exports'], function(synapse, exports) {
-      return factory(root, exports, synapse);
+    return define('datalink', ['synapse', 'underscore', 'exports'], function(synapse, underscore, exports) {
+      return factory(root, exports, synapse, underscore);
     });
   } else {
     return root.DataLink = factory(root, {}, root.Synapse);
   }
-})(this, function(root, DataLink, Synapse) {
+})(this, function(root, DataLink, Synapse, _) {
   var checkView;
+  _ || (_ = window._);
   checkView = function(view) {
     if (view.model == null) {
       throw new Error("View " + (view.toString()) + " must be bound to a model!");
     }
   };
-  return {
+  _.extend(DataLink, {
     version: "0.2",
     defaultOptions: {
       bind: 'syncWith',
@@ -29,59 +30,55 @@ Dual licensed under the MIT or GPL Version 3 licenses.
       prefill: true,
       triggerOnBind: false
     },
-    linkView: function(view, elements, defaultOptions, elementOptions) {
-      var $element, bind, checkElement, customSyncWith, defaults, element, findElement, localElementOptions, observer, prefill, syncOptions, _i, _len, _results;
+    _getLocalOptions: function(elements, defaultOptions, elementOptions) {
+      var defaults, element, locals, _i, _len;
       defaults = _.defaults(defaultOptions || {}, this.defaultOptions);
+      locals = {};
+      for (_i = 0, _len = elements.length; _i < _len; _i++) {
+        element = elements[_i];
+        locals[element] = _.defaults((elementOptions != null ? elementOptions[element] : void 0) || {}, defaults);
+      }
+      return locals;
+    },
+    linkView: function(view, elements, defaultOptions, elementOptions) {
+      var $element, bind, checkElement, customSyncWith, element, findElement, localElementOptions, localOptions, observer, prefill, _i, _len, _results;
+      localOptions = this._getLocalOptions(elements, defaultOptions, elementOptions);
       checkView(view);
       observer = new Synapse(view.model);
-      syncOptions = {
-        triggerOnBind: defaults.triggerOnBind
-      };
-      customSyncWith = function(observed) {
+      customSyncWith = function(observed, syncOptions) {
         return observer.observe(observed, syncOptions).notify(observed, syncOptions);
       };
       prefill = function(observed, localElementOptions) {
         var attribute, interface;
-        if ((localElementOptions != null ? localElementOptions.prefill : void 0) === false) {
-          return;
-        }
-        if (!defaults.prefill && (localElementOptions != null ? localElementOptions.prefill : void 0) !== true) {
-          return;
-        }
+        if (localElementOptions.prefill === false) return;
         attribute = observed.hook.detectOtherInterface(observed.raw);
         interface = observed.hook.detectInterface(observed.raw);
         observed.hook.setHandler(observed.raw, interface, view.model.get(attribute));
         return observed.set(attribute, observed);
       };
       bind = function($element, localElementOptions) {
-        var customBind, observeFn, observeFnName, observed;
-        if (customBind = localElementOptions != null ? localElementOptions.bind : void 0) {
-          observeFnName = customBind;
-        } else {
-          observeFnName = defaults.bind;
-        }
+        var observeFn, observeFnName, observed, syncOptions;
+        observeFnName = localElementOptions.bind;
         if (observeFnName === 'syncWith') {
           observeFn = customSyncWith;
         } else {
           observeFn = observer[observeFnName];
         }
+        syncOptions = {
+          triggerOnBind: localElementOptions.triggerOnBind
+        };
         observed = new Synapse($element);
         prefill(observed, localElementOptions);
-        return observeFn.call(observer, observed);
+        return observeFn.call(observer, observed, syncOptions);
       };
       checkElement = function($element, selector, localElementOptions) {
-        if (!$element.length) {
-          if ((localElementOptions != null ? localElementOptions.ignoreEmpty : void 0) === true) {
-            return;
-          }
-          if (!defaults.ignoreEmpty && (localElementOptions != null ? localElementOptions.ignoreEmpty : void 0) !== false) {
-            throw new Error("No matching element found\nfor selector " + selector + "!");
-          }
+        if (!($element.length || localElementOptions.ignoreEmpty)) {
+          throw new Error("No matching element found\nfor selector " + selector + "!");
         }
       };
       findElement = function(element, localElementOptions) {
         var $element, attribute, selector;
-        attribute = (localElementOptions != null ? localElementOptions.attribute : void 0) || defaults.attribute;
+        attribute = localElementOptions.attribute;
         selector = "[" + attribute + "=" + element + "]";
         $element = view.$(selector);
         checkElement($element, selector, localElementOptions);
@@ -90,11 +87,12 @@ Dual licensed under the MIT or GPL Version 3 licenses.
       _results = [];
       for (_i = 0, _len = elements.length; _i < _len; _i++) {
         element = elements[_i];
-        localElementOptions = elementOptions != null ? elementOptions[element] : void 0;
+        localElementOptions = localOptions[element];
         $element = findElement(element, localElementOptions);
         _results.push(bind($element, localElementOptions));
       }
       return _results;
     }
-  };
+  });
+  return DataLink;
 });
