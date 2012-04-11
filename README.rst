@@ -2,6 +2,10 @@
 Backbone.DataLink
 =================
 
+.. image:: https://secure.travis-ci.org/passy/backbone.datalink.png?branch=master
+    :alt: Travis CI build status
+    :target: http://travis-ci.org/#!/passy/backbone.datalink
+
 Simple wrapper around Synapse to keep data between your Backbone models and
 views in sync.
 
