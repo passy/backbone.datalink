@@ -18,6 +18,16 @@ configured with both the jQuery and Backbone Model hook.
 Installation
 ============
 
+The library itself can be installed via the `volo <http://volojs.org/>`_
+package manager::
+
+    volo add passy/backbone.datalink
+
+Alternatively, you can grab the latest version here:
+
+* `Uncompressed <https://raw.github.com/passy/backbone.datalink/master/dist/backbone.datalink.js>`_
+* `Uglified <https://raw.github.com/passy/backbone.datalink/master/dist/backbone.datalink.min.js>`_
+
 Backbone.DataLink supports the `UMD <https://github.com/umdjs/umd>`_ and can be
 loaded in CommonJS environments, via AMD and as traditional browser script.
 
