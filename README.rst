@@ -78,6 +78,14 @@ Options
 * ``triggerOnBind``, default ``false``
     * Fire change event after binding.
 
+Alternatives
+============
+
+There are some projects with similar goals:
+
+* `Backbone.ModelBinder <https://github.com/theironcook/Backbone.ModelBinder>`_
+* `backbone.modelbinding <https://github.com/derickbailey/backbone.modelbinding>`_
+
 License
 =======
 
