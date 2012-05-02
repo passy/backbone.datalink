@@ -76,7 +76,7 @@ Dual licensed under the MIT or GPL Version 3 licenses.
         return observeFn.call(observer, observed, syncOptions);
       };
       checkElement = function($element, selector, localElementOptions) {
-        if (!($element.length && localElementOptions.ignoreEmpty)) {
+        if (!$element.length && localElementOptions.ignoreEmpty === false) {
           throw new Error("No matching element found\nfor selector " + selector + "!");
         }
       };

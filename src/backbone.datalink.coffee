@@ -89,7 +89,7 @@ Dual licensed under the MIT or GPL Version 3 licenses.
 
             checkElement = ($element, selector, localElementOptions) ->
                 # Throw error if so desired.
-                unless $element.length and localElementOptions.ignoreEmpty
+                if not $element.length and localElementOptions.ignoreEmpty is false
                         throw new Error("""No matching element found
                             for selector #{selector}!""")
 
